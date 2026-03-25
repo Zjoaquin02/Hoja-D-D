@@ -38,11 +38,11 @@
 
         </div>
 
-        <h2>Ataques</h2>
-        <div id="ataques"></div>
-
         <h2>Conjuros</h2>
-        <div id="conjuros"></div>
+        <div id="Conjuros"></div>
+
+        <h2>Trucos</h2>
+        <div id="Trucos"></div>
 
         <h2>Equipo</h2>
         <div id="equipo"></div>
@@ -62,7 +62,7 @@
         // HEADER
         document.getElementById("nombre").innerText = personaje.nombre;
         document.getElementById("info").innerText =
-            personaje.clase + " lvl " + personaje.nivel + " - " + personaje.jugador;
+            personaje.clase + " lvl " + personaje.nivel + " - " + personaje.Raza;
 
         // STATS
         let statsDiv = document.getElementById("stats");
@@ -104,16 +104,16 @@ HP: ${personaje.combate.hp_actual}/${personaje.combate.hp_max}
 
         renderSkills();
 
-        // ATAQUES
+        // Conjuros
         let atk = "";
-        personaje.ataques.forEach(a => {
+        personaje.Conjuros.forEach(a => {
             atk += `${a.nombre} (${a.bono}) - ${a.daño}<br>`;
         });
-        document.getElementById("ataques").innerHTML = atk;
+        document.getElementById("Conjuros").innerHTML = atk;
 
-        // CONJUROS
-        document.getElementById("conjuros").innerHTML =
-            personaje.conjuros.join("<br>");
+        // Trucos
+        document.getElementById("Trucos").innerHTML =
+            personaje.Trucos.join("<br>");
 
         // EQUIPO
         document.getElementById("equipo").innerHTML =

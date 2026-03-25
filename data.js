@@ -1,27 +1,27 @@
 const personaje = {
-    nombre: "Virul",
-    clase: "Brujo",
-    nivel: 4,
-    jugador: "Joaquin",
+    nombre: "Labrob",
+    clase: "Druida",
+    nivel: 2,
+    Raza: "Alto Elfo",
     alineamiento: "Neutral",
     xp: 0,
 
     proficiency: 2,
 
     stats: {
-        str: 10,
-        dex: 18,
-        con: 12,
-        int: 13,
-        wis: 15,
-        cha: 18
+        str: 12,
+        dex: 12,
+        con: 14,
+        int: 11,
+        wis: 16,
+        cha: 9
     },
 
     combate: {
-        ca: 13,
-        velocidad: "9m",
-        hp_max: 28,
-        hp_actual: 28,
+        ca: 14,
+        velocidad: "30pies",
+        hp_max: 18,
+        hp_actual: 18,
         hp_temp: 0
     },
 
@@ -38,28 +38,36 @@ const personaje = {
         medicina: { stat: "wis", prof: false },
         naturaleza: { stat: "int", prof: true },
         percepcion: { stat: "wis", prof: true },
-        perspicacia: { stat: "wis", prof: false },
+        perspicacia: { stat: "wis", prof: true },
         persuasion: { stat: "cha", prof: false },
         religion: { stat: "int", prof: false },
-        sigilo: { stat: "dex", prof: false },
+        sigilo: { stat: "dex", prof: true },
         supervivencia: { stat: "wis", prof: true },
         trato_animales: { stat: "wis", prof: true }
     },
 
-    ataques: [
-        { nombre: "Eldritch Blast", bono: "+6", daño: "1d10" }
+    Conjuros: [
+        { nombre: "Curar heridas", bono: "+3", daño: "2d8" },
+        { nombre: "Rayo guiado", bono: "+3", daño: "4d6+ventaja" },
+        { nombre: "Enredaderas", bono: "+0", daño: "20pies terreno dificil" },
+        { nombre: "Ola tronadora", bono: "+3", daño: "2d8 y es empujado 10 pies" }
     ],
 
-    conjuros: [
-        "Eldritch Blast",
-        "Hex",
-        "Armor of Agathys"
+    Trucos: [
+        "Guia 1d4",
+        "Latigo de espinas 1d6 y se acerca 10 pies",
+        "Piedad con los moribundos",
+        "Shillelagh 1d8"
     ],
 
     equipo: [
-        "Armadura de cuero",
-        "Daga",
-        "Báculo arcano"
+        "Cartografo cosas",
+        "Escudo",
+        "Maza",
+        "Kit Herval",
+        "Carpa",
+        "Bolsa de dormir",
+        "37 oro"
     ],
 
     notas: "Aura Tumoral de Putrefacción..."
