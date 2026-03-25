@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hoja D&D</title>
+    <link rel="icon" type="image/png" href="Fogata.png">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <div class="sheet">
+
+        <div class="layout">
+
+            <!-- IZQUIERDA -->
+            <div>
+
+                <h2 id="nombre"></h2>
+                <p id="info"></p>
+
+                <h2>Atributos</h2>
+                <div class="grid stats-grid" id="stats"></div>
+
+                <h2>Combate</h2>
+                <div id="combate"></div>
+
+            </div>
+
+            <!-- DERECHA -->
+            <div>
+
+                <h2>Habilidades</h2>
+                <div id="skills" class="skills-grid"></div>
+
+            </div>
+
+        </div>
+
+        <h2>Ataques</h2>
+        <div id="ataques"></div>
+
+        <h2>Conjuros</h2>
+        <div id="conjuros"></div>
+
+        <h2>Equipo</h2>
+        <div id="equipo"></div>
+
+        <h2>Notas</h2>
+        <div id="notas"></div>
+
+    </div>
+
+    <script src="data.js"></script>
+
+    <script>
+        function mod(val) {
+            return Math.floor((val - 10) / 2);
+        }
+
+        // HEADER
+        document.getElementById("nombre").innerText = personaje.nombre;
+        document.getElementById("info").innerText =
+            personaje.clase + " lvl " + personaje.nivel + " - " + personaje.jugador;
+
+        // STATS
+        let statsDiv = document.getElementById("stats");
+
+        Object.entries(personaje.stats).forEach(([key, val]) => {
+            let m = mod(val);
+
+            statsDiv.innerHTML += `
+    <div class="box">
+      <b>${key.toUpperCase()}</b>
+      <div>${val}</div>
+      <div>${m >= 0 ? "+" : ""}${m}</div>
+    </div>
+  `;
+        });
+
+        // COMBATE
+        document.getElementById("combate").innerHTML = `
+CA: ${personaje.combate.ca} |
+HP: ${personaje.combate.hp_actual}/${personaje.combate.hp_max}
+`;
+
+        // SKILLS
+        function renderSkills() {
+            let container = document.getElementById("skills");
+
+            Object.entries(personaje.skills).forEach(([name, data]) => {
+                let baseMod = mod(personaje.stats[data.stat]);
+                let total = baseMod + (data.prof ? personaje.proficiency : 0);
+
+                container.innerHTML += `
+      <div class="skill">
+        <span>${data.prof ? "●" : "○"} ${name.replace("_", " ")} (${data.stat.toUpperCase()})</span>
+        <span>${total >= 0 ? "+" : ""}${total}</span>
+      </div>
+    `;
+            });
+        }
+
+        renderSkills();
+
+        // ATAQUES
+        let atk = "";
+        personaje.ataques.forEach(a => {
+            atk += `${a.nombre} (${a.bono}) - ${a.daño}<br>`;
+        });
+        document.getElementById("ataques").innerHTML = atk;
+
+        // CONJUROS
+        document.getElementById("conjuros").innerHTML =
+            personaje.conjuros.join("<br>");
+
+        // EQUIPO
+        document.getElementById("equipo").innerHTML =
+            "<ul>" + personaje.equipo.map(e => `<li>${e}</li>`).join("") + "</ul>";
+
+        // NOTAS
+        document.getElementById("notas").innerText = personaje.notas;
+
+    </script>
+
+</body>
+
+</html>
