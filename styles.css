@@ -3,63 +3,111 @@
 }
 
 body {
-    background: #000000;
-    font-family: Georgia, serif;
+    background-image: url('ladrillos.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    font-family: 'Georgia', serif;
     display: flex;
     justify-content: center;
+    padding: 20px;
+    margin: 0;
 }
 
 .sheet {
-    width: 1000px;
-    background: #f0f0f0d5;
-    padding: 20px;
-    border: 3px solid #000000;
-    border-radius: 10px;
-    box-shadow: 0 0 25px black;
+    width: 900px;
+    background-color: #f2d1a9;
+    /* Color pergamino */
+    padding: 40px;
+    /* Efecto de borde quemado/irregular */
+    border: 2px solid #5d4037;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5), inset 0 0 50px #d4a373;
+    border-radius: 5px;
+    position: relative;
 }
 
-/* TITULOS */
+/* Títulos con separadores de estilo D&D */
 h2 {
-    border-bottom: 2px solid #000000;
-    margin-top: 20px;
+    text-align: center;
+    color: #2c1810;
+    margin-bottom: 10px;
+    font-variant: small-caps;
 }
 
-/* LAYOUT PRINCIPAL */
+/* Línea divisoria ornamental */
+.divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(to right, transparent, #5d4037, transparent);
+}
+
+.divider-icon {
+    margin: 0 10px;
+    font-size: 18px;
+    color: #5d4037;
+}
+
 .layout {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 30px;
 }
 
-/* GRIDS */
-.grid {
-    display: grid;
-    gap: 10px;
-}
-
-/* ATRIBUTOS */
+/* Atributos en cajas de madera */
 .stats-grid {
+    display: grid;
     grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
 }
 
 .box {
-    border: 1px solid #000000;
+    border: 3px double #5d4037;
+    /* Borde estilo marco */
+    background: rgba(255, 255, 255, 0.2);
     padding: 10px;
     text-align: center;
-    border-radius: 5px;
+    border-radius: 8px;
 }
 
-/* SKILLS */
+.box b {
+    color: #5d4037;
+    font-size: 14px;
+}
+
+.box div:nth-child(2) {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.box div:nth-child(3) {
+    color: #795548;
+}
+
+/* Habilidades y listas */
 .skills-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5px 15px;
+    grid-template-columns: 1fr;
+    gap: 4px;
 }
 
 .skill {
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid #999;
-    padding: 3px 0;
-    font-size: 14px;
+    border-bottom: 1px solid rgba(93, 64, 55, 0.3);
+    font-size: 13px;
+    padding: 2px 0;
+}
+
+ul {
+    list-style: "➔ ";
+    padding-left: 20px;
 }

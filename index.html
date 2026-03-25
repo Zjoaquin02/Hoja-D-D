@@ -3,9 +3,47 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Hoja D&D</title>
+    <title>Hoja D&D - Labrob</title>
     <link rel="icon" type="image/png" href="Fogata.png">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Estilos rápidos para asegurar el look de la imagen */
+        .divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #5d4037, transparent);
+        }
+
+        .divider-icon {
+            margin: 0 10px;
+            font-size: 18px;
+            color: #5d4037;
+        }
+
+        #nombre {
+            font-size: 2.5em;
+            margin-bottom: 0;
+            border: none;
+            text-align: center;
+        }
+
+        .info-subtitle {
+            text-align: center;
+            font-style: italic;
+            color: #5d4037;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 
 <body>
@@ -14,116 +52,121 @@
 
         <div class="layout">
 
-            <!-- IZQUIERDA -->
             <div>
-
                 <h2 id="nombre"></h2>
-                <p id="info"></p>
+                <div class="info-subtitle">
+                    🌿 <span id="info"></span> 🌿
+                </div>
+
+                <div class="divider"><span class="divider-icon">⚔️</span></div>
 
                 <h2>Atributos</h2>
                 <div class="grid stats-grid" id="stats"></div>
 
+                <div class="divider"><span class="divider-icon">🛡️</span></div>
+
                 <h2>Combate</h2>
                 <div id="combate"></div>
-
             </div>
 
-            <!-- DERECHA -->
             <div>
-
                 <h2>Habilidades</h2>
                 <div id="skills" class="skills-grid"></div>
-
             </div>
 
         </div>
 
+        <div class="divider"><span class="divider-icon">📜</span></div>
+
         <h2>Conjuros</h2>
         <div id="Conjuros"></div>
 
+        <div class="divider"><span class="divider-icon">✨</span></div>
+
         <h2>Trucos</h2>
-        <div id="Trucos"></div>
+        <div id="Trucos" style="text-align: center;"></div>
+
+        <div class="divider"><span class="divider-icon">🎒</span></div>
 
         <h2>Equipo</h2>
         <div id="equipo"></div>
 
+        <div class="divider"><span class="divider-icon">✍️</span></div>
+
         <h2>Notas</h2>
-        <div id="notas"></div>
+        <div id="notas" style="font-style: italic; text-align: center; padding: 10px;"></div>
 
     </div>
 
     <script src="data.js"></script>
 
     <script>
+        // Lógica de renderizado [cite: 5]
         function mod(val) {
             return Math.floor((val - 10) / 2);
         }
 
-        // HEADER
+        // HEADER [cite: 6]
         document.getElementById("nombre").innerText = personaje.nombre;
         document.getElementById("info").innerText =
             personaje.clase + " lvl " + personaje.nivel + " - " + personaje.Raza;
 
-        // STATS
+        // STATS [cite: 8]
         let statsDiv = document.getElementById("stats");
-
         Object.entries(personaje.stats).forEach(([key, val]) => {
             let m = mod(val);
-
             statsDiv.innerHTML += `
-    <div class="box">
-      <b>${key.toUpperCase()}</b>
-      <div>${val}</div>
-      <div>${m >= 0 ? "+" : ""}${m}</div>
-    </div>
-  `;
+                <div class="box">
+                  <b>${key.toUpperCase()}</b>
+                  <div>${val}</div>
+                  <div>${m >= 0 ? "+" : ""}${m}</div>
+                </div>
+            `;
         });
 
-        // COMBATE
+        // COMBATE (Actualizado con iconos) [cite: 9]
         document.getElementById("combate").innerHTML = `
-CA: ${personaje.combate.ca} |
-HP: ${personaje.combate.hp_actual}/${personaje.combate.hp_max}
-`;
+            <div style="display:flex; gap:20px; justify-content:center; font-weight:bold; color: #5d4037;">
+                <span>🛡️ CA: ${personaje.combate.ca}</span>
+                <span>❤️ HP: ${personaje.combate.hp_actual}/${personaje.combate.hp_max}</span>
+            </div>
+        `;
 
-        // SKILLS
+        // SKILLS [cite: 11]
         function renderSkills() {
             let container = document.getElementById("skills");
-
             Object.entries(personaje.skills).forEach(([name, data]) => {
                 let baseMod = mod(personaje.stats[data.stat]);
                 let total = baseMod + (data.prof ? personaje.proficiency : 0);
-
                 container.innerHTML += `
-      <div class="skill">
-        <span>${data.prof ? "●" : "○"} ${name.replace("_", " ")} (${data.stat.toUpperCase()})</span>
-        <span>${total >= 0 ? "+" : ""}${total}</span>
-      </div>
-    `;
+                    <div class="skill">
+                        <span>${data.prof ? "●" : "○"} ${name.replace("_", " ")}</span>
+                        <span style="font-weight:bold;">${total >= 0 ? "+" : ""}${total}</span>
+                    </div>
+                `;
             });
         }
-
         renderSkills();
 
-        // Conjuros
-        let atk = "";
-        personaje.Conjuros.forEach(a => {
-            atk += `${a.nombre} (${a.bono}) - ${a.daño}<br>`;
+        // CONJUROS (Estilo lista centrada) [cite: 14, 15]
+        let conjurosHTML = "";
+        personaje.Conjuros.forEach(c => {
+            conjurosHTML += `<div style="margin-bottom:8px;"><b>${c.nombre}</b> (${c.bono}) — <i>${c.daño}</i></div>`;
         });
-        document.getElementById("Conjuros").innerHTML = atk;
+        document.getElementById("Conjuros").innerHTML = `<div style="text-align:center;">${conjurosHTML}</div>`;
 
-        // Trucos
-        document.getElementById("Trucos").innerHTML =
-            personaje.Trucos.join("<br>");
+        // TRUCOS [cite: 16]
+        document.getElementById("Trucos").innerHTML = personaje.Trucos.join(" • ");
 
-        // EQUIPO
+        // EQUIPO [cite: 17]
         document.getElementById("equipo").innerHTML =
-            "<ul>" + personaje.equipo.map(e => `<li>${e}</li>`).join("") + "</ul>";
+            "<ul style='columns: 2; -webkit-columns: 2;'>" +
+            personaje.equipo.map(e => `<li>${e}</li>`).join("") + "</ul>";
 
-        // NOTAS
+        // NOTAS [cite: 18]
         document.getElementById("notas").innerText = personaje.notas;
 
     </script>
-
 </body>
 
 </html>
