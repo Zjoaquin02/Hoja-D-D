@@ -4,9 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Hoja D&D</title>
+
+    <!-- Fuente -->
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="Fogata.png">
-    <link rel="stylesheet" href="styles.css">
+
+    <!-- Icono -->
+    <link rel="icon" type="image/png" href="img/Fogata.png">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+
     <style>
         .divider {
             display: flex;
@@ -96,8 +103,8 @@
         <h2>Notas</h2>
         <div id="notas" style="font-style: italic; text-align: center; padding: 10px;"></div>
 
-        <!-- 🔥 IMAGEN AGREGADA -->
-        <img src="Rosa.png" class="rosa-footer">
+        <!-- Imagen footer -->
+        <img src="img/Rosa.png" class="rosa-footer">
 
     </div>
 
@@ -159,8 +166,8 @@
             personaje.equipo.map(e => `<li>${e}</li>`).join("") + "</ul>";
 
         document.getElementById("notas").innerText = personaje.notas;
-
     </script>
+
 </body>
 
 </html>

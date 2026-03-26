@@ -3,7 +3,7 @@
 }
 
 body {
-    background-image: url('ladrillos.png');
+    background-image: url('../img/ladrillos.png');
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
@@ -23,7 +23,6 @@ body {
     box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5), inset 0 0 50px #d4a373;
     border-radius: 5px;
     position: relative;
-    /* IMPORTANTE */
 }
 
 h2 {
@@ -70,14 +69,12 @@ ul {
     padding-left: 20px;
 }
 
-/* 🔥 NUEVO: imagen tipo footer */
+/* 🔥 footer decorativo */
 .rosa-footer {
     position: absolute;
     bottom: 10px;
     right: 10px;
     width: 80px;
-    /* ajustá tamaño a gusto */
     opacity: 0.9;
     pointer-events: none;
-    /* no molesta clicks */
 }
