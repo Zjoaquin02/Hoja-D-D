@@ -97,10 +97,24 @@ body::before {
     background: #3a2a1f;
     border-radius: 10px;
     overflow: hidden;
+    position: relative;
 }
 
+/* vida normal */
 .hp-bar {
     height: 100%;
+    background: #4caf50;
+    transition: 0.3s;
+}
+
+/* vida temporal */
+.hp-temp {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    background: #4fc3f7;
+    /* 🔵 azul */
     transition: 0.3s;
 }
 

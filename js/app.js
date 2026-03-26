@@ -45,13 +45,14 @@ function renderCombat() {
 
             <div class="hp-inputs">
                 ❤️ 
-                <input type="number" id="hpActual" value="${c.hp_actual}">
+                <input type="number" id="hpActual" value="${localStorage.getItem("hp_actual") || c.hp_actual}">
                 /
-                <input type="number" id="hpMax" value="${c.hp_max}">
+                <input type="number" id="hpMax" value="${localStorage.getItem("hp_max") || c.hp_max}">
             </div>
 
             <div class="hp-bar-container">
                 <div class="hp-bar" id="hpBar"></div>
+                <div class="hp-temp" id="hpTemp"></div>
             </div>
         </div>
     `;
@@ -67,16 +68,27 @@ function actualizarHP() {
 
     if (max <= 0) max = 1;
     if (actual < 0) actual = 0;
-    if (actual > max) actual = max;
 
-    const porcentaje = (actual / max) * 100;
-    const barra = document.getElementById("hpBar");
+    const hpBar = document.getElementById("hpBar");
+    const hpTemp = document.getElementById("hpTemp");
 
-    barra.style.width = porcentaje + "%";
+    let normal = Math.min(actual, max);
+    let temp = Math.max(actual - max, 0);
 
-    if (porcentaje > 60) barra.style.background = "#4caf50";
-    else if (porcentaje > 30) barra.style.background = "#ffc107";
-    else barra.style.background = "#f44336";
+    let normalPercent = (normal / max) * 100;
+    let tempPercent = (temp / max) * 100;
+
+    /* VIDA NORMAL */
+    hpBar.style.width = normalPercent + "%";
+
+    if (normalPercent > 60) hpBar.style.background = "#4caf50";
+    else if (normalPercent > 30) hpBar.style.background = "#ffc107";
+    else hpBar.style.background = "#f44336";
+
+    /* VIDA TEMPORAL */
+    hpTemp.style.width = tempPercent + "%";
+    localStorage.setItem("hp_actual", actual);
+    localStorage.setItem("hp_max", max);
 }
 
 function bindHPEvents() {
