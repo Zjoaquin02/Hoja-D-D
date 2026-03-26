@@ -67,6 +67,7 @@ const personaje = {
         "Kit Herval",
         "Carpa",
         "Bolsa de dormir",
+        "Pergamino hablar con animales",
         "37 oro"
     ],
 
