@@ -57,7 +57,8 @@ const personaje = {
         "Guia 1d4",
         "Latigo de espinas 1d6 y se acerca 10 pies",
         "Piedad con los moribundos",
-        "Shillelagh 1d8"
+        "Shillelagh 1d8",
+        "Poison Spray 1d12 puede resistirse con salvacion"
     ],
 
     equipo: [
@@ -71,5 +72,11 @@ const personaje = {
         "37 oro"
     ],
 
-    notas: "Aura Tumoral de Putrefacción..."
+    notas: [
+        "Forma salvaje 2/2",
+        " Vision en la oscuridad",
+        " Mente feerica",
+        " Paso elfico(35 pies)",
+        " Lenguaje druidico",
+    ],
 };
