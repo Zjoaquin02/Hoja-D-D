@@ -7,7 +7,6 @@
     <link rel="icon" type="image/png" href="Fogata.png">
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Estilos rápidos para asegurar el look de la imagen */
         .divider {
             display: flex;
             align-items: center;
@@ -96,22 +95,22 @@
         <h2>Notas</h2>
         <div id="notas" style="font-style: italic; text-align: center; padding: 10px;"></div>
 
+        <!-- 🔥 IMAGEN AGREGADA -->
+        <img src="Rosa.png" class="rosa-footer">
+
     </div>
 
     <script src="data.js"></script>
 
     <script>
-        // Lógica de renderizado [cite: 5]
         function mod(val) {
             return Math.floor((val - 10) / 2);
         }
 
-        // HEADER [cite: 6]
         document.getElementById("nombre").innerText = personaje.nombre;
         document.getElementById("info").innerText =
             personaje.clase + " lvl " + personaje.nivel + " - " + personaje.Raza;
 
-        // STATS [cite: 8]
         let statsDiv = document.getElementById("stats");
         Object.entries(personaje.stats).forEach(([key, val]) => {
             let m = mod(val);
@@ -124,7 +123,6 @@
             `;
         });
 
-        // COMBATE (Actualizado con iconos) [cite: 9]
         document.getElementById("combate").innerHTML = `
             <div style="display:flex; gap:20px; justify-content:center; font-weight:bold; color: #5d4037;">
                 <span>🛡️ CA: ${personaje.combate.ca}</span>
@@ -132,7 +130,6 @@
             </div>
         `;
 
-        // SKILLS [cite: 11]
         function renderSkills() {
             let container = document.getElementById("skills");
             Object.entries(personaje.skills).forEach(([name, data]) => {
@@ -148,22 +145,18 @@
         }
         renderSkills();
 
-        // CONJUROS (Estilo lista centrada) [cite: 14, 15]
         let conjurosHTML = "";
         personaje.Conjuros.forEach(c => {
             conjurosHTML += `<div style="margin-bottom:8px;"><b>${c.nombre}</b> (${c.bono}) — <i>${c.daño}</i></div>`;
         });
         document.getElementById("Conjuros").innerHTML = `<div style="text-align:center;">${conjurosHTML}</div>`;
 
-        // TRUCOS [cite: 16]
         document.getElementById("Trucos").innerHTML = personaje.Trucos.join(" • ");
 
-        // EQUIPO [cite: 17]
         document.getElementById("equipo").innerHTML =
             "<ul style='columns: 2; -webkit-columns: 2;'>" +
             personaje.equipo.map(e => `<li>${e}</li>`).join("") + "</ul>";
 
-        // NOTAS [cite: 18]
         document.getElementById("notas").innerText = personaje.notas;
 
     </script>
