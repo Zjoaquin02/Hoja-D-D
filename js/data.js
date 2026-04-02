@@ -69,7 +69,9 @@ const personaje = {
         "Carpa",
         "Bolsa de dormir",
         "Pergamino hablar con animales",
-        "37 oro"
+        "69 oro",
+        "Equipo de supervivencia(cuerda, agua, etc)",
+        "Pocin invi/Libro mago"
     ],
 
     notas: [
