@@ -1,7 +1,8 @@
 const personaje = {
     nombre: "Labrob",
     clase: "Druida",
-    nivel: 2,
+    subclase: "Círculo de la Luna",
+    nivel: 3,
     Raza: "Alto Elfo",
     alineamiento: "Neutral",
     xp: 0,
@@ -20,9 +21,15 @@ const personaje = {
     combate: {
         ca: 14,
         velocidad: "30pies",
-        hp_max: 18,
-        hp_actual: 18,
+        hp_max: 25,
+        hp_actual: 25,
         hp_temp: 0
+    },
+
+    recursos: {
+        forma_salvaje: { actual: 2, max: 2 },
+        conjuros_l1: { actual: 4, max: 4 },
+        conjuros_l2: { actual: 2, max: 2 }
     },
 
     skills: {
@@ -47,10 +54,14 @@ const personaje = {
     },
 
     Conjuros: [
-        { nombre: "Curar heridas", bono: "+3", daño: "2d8" },
-        { nombre: "Rayo guiado", bono: "+3", daño: "4d6+ventaja" },
-        { nombre: "Enredaderas", bono: "+0", daño: "20pies terreno dificil" },
-        { nombre: "Ola tronadora", bono: "+3", daño: "2d8 y es empujado 10 pies" }
+        { nombre: "Curar heridas (Lvl 1)", bono: "+3", daño: "2d8" },
+        { nombre: "Rayo guiado (Lvl 1)", bono: "+3", daño: "4d6 + ventaja" },
+        { nombre: "Enredaderas (Lvl 1)", bono: "+0", daño: "20 pies terreno difícil" },
+        { nombre: "Ola tronadora (Lvl 1)", bono: "+3", daño: "2d8 + empujado 10 pies" },
+        { nombre: "Crecimiento de espinas (Lvl 2)", bono: "+0", daño: "2d4 por cada 5 pies movidos" },
+        { nombre: "Esfera de fuego (Lvl 2)", bono: "+3", daño: "2d6 fuego (Acción Bonus)" },
+        { nombre: "Restablecimiento menor (Lvl 2)", bono: "+3", daño: "Cura ceguera, sordera, parálisis o envenenamiento" },
+        { nombre: "Pasar sin rastro (Lvl 2)", bono: "+0", daño: "+10 a Sigilo para aliados cercanos" }
     ],
 
     Trucos: [
@@ -62,23 +73,24 @@ const personaje = {
     ],
 
     equipo: [
-        "Cartografo cosas",
+        "Útiles de cartógrafo",
         "Escudo",
         "Maza",
-        "Kit Herval",
+        "Kit de hierbas",
         "Carpa",
         "Bolsa de dormir",
-        "Pergamino hablar con animales",
-        "69 oro",
-        "Equipo de supervivencia(cuerda, agua, etc)",
-        "Pocin invi/Libro mago"
+        "Pergamino de hablar con animales",
+        "129 oro",
+        "Equipo de supervivencia (cuerda, agua, etc.)",
+        "Poción de invisibilidad",
+        "Libro de mago"
     ],
 
     notas: [
-        "Forma salvaje 2/2",
-        " Vision en la oscuridad",
-        " Mente feerica",
-        " Paso elfico(35 pies)",
-        " Lenguaje druidico",
+        "Visión en la oscuridad",
+        "Mente feérica",
+        "Paso élfico (35 pies)",
+        "Lenguaje druídico",
+        "Sanación Lunar (Soporte): Agrega +4 HP a cada conjuro de curación que lances"
     ],
 };

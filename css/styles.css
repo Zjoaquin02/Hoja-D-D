@@ -24,7 +24,8 @@ body::before {
 }
 
 .sheet {
-    width: 900px;
+    width: 100%;
+    max-width: 900px;
     background-color: #f2d1a9;
     padding: 40px;
     border: 2px solid #5d4037;
@@ -145,4 +146,212 @@ body::before {
     letter-spacing: 2px;
     color: #2c1810;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* PASIVA SUBCLASE */
+.subclass-passive {
+    background-color: #e8c69f;
+    border: 2px dashed #8d5c46;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.passive-icon {
+    font-size: 2.2em;
+    line-height: 1;
+    filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.15));
+}
+
+.passive-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.passive-text strong {
+    font-size: 1.15em;
+    color: #4a2c20;
+}
+
+.passive-text span {
+    font-size: 0.95em;
+    color: #5d4037;
+}
+
+/* CONTENEDOR DE RECURSOS */
+.recursos-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 15px;
+    background: rgba(93, 64, 55, 0.08);
+    border-radius: 6px;
+    border: 1px solid rgba(93, 64, 55, 0.25);
+    margin-bottom: 10px;
+}
+
+.recurso-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.recurso-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 1.15em;
+    color: #3e2723;
+}
+
+.recurso-count {
+    font-size: 1em;
+    color: #5d4037;
+}
+
+.slots-container {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* SLOTS DE RECURSO */
+.resource-slot {
+    width: 28px;
+    height: 28px;
+    border: 2px solid #5d4037;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.15), 1px 1px 1px rgba(0,0,0,0.15);
+}
+
+.resource-slot:hover {
+    transform: scale(1.1);
+}
+
+/* Activos (Disponibles) */
+.resource-slot.celeste.active {
+    background-color: #80deea; /* celeste claro */
+    box-shadow: 0 0 6px rgba(128, 222, 234, 0.6), inset 0 1px 2px rgba(255,255,255,0.4);
+}
+
+.resource-slot.azul.active {
+    background-color: #5c6bc0; /* azul índigo */
+    box-shadow: 0 0 6px rgba(92, 107, 192, 0.6), inset 0 1px 2px rgba(255,255,255,0.4);
+}
+
+/* Gastados (Negros) */
+.resource-slot.spent {
+    background-color: #2c2c2c;
+    border-color: #1a1a1a;
+    box-shadow: inset 0 3px 5px rgba(0,0,0,0.6);
+}
+
+/* BOTONES DE DESCANSO */
+.rest-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 5px;
+}
+
+.rest-btn {
+    padding: 8px 12px;
+    font-family: inherit;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #fbe9e7;
+    border: 2px solid #4a2c20;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 1px 2px 3px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.rest-btn:active {
+    transform: translateY(1px);
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+}
+
+.rest-btn.short-rest {
+    background-color: #8d6e63;
+}
+
+.rest-btn.short-rest:hover {
+    background-color: #a1887f;
+}
+
+.rest-btn.long-rest {
+    background-color: #5d4037;
+}
+
+.rest-btn.long-rest:hover {
+    background-color: #6d4c41;
+}
+
+/* AJUSTES DE CONJUROS Y TEXTOS */
+.spell-item {
+    padding: 6px 10px;
+    margin-bottom: 6px;
+    background: rgba(93, 64, 55, 0.05);
+    border-left: 3px solid #8d2b24;
+    border-radius: 0 4px 4px 0;
+}
+
+.spell-bono {
+    color: #8d2b24;
+}
+
+.spell-dmg {
+    color: #4a2c20;
+}
+
+/* RESPONSIVE / MÓVILES */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .sheet {
+        padding: 20px 15px;
+        border-radius: 0; /* Pantalla completa en bordes */
+    }
+
+    .layout {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .stats-grid {
+        gap: 10px;
+    }
+
+    #nombre {
+        font-size: 2.2em;
+    }
+
+    .subclass-passive {
+        flex-direction: row;
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .passive-icon {
+        font-size: 1.8em;
+    }
+
+    /* Ajustar tamaño de toque de cuadritos para móvil (mínimo de área táctil sugerida) */
+    .resource-slot {
+        width: 32px;
+        height: 32px;
+    }
 }
