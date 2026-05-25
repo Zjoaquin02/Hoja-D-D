@@ -245,6 +245,11 @@ body::before {
     box-shadow: 0 0 6px rgba(92, 107, 192, 0.6), inset 0 1px 2px rgba(255,255,255,0.4);
 }
 
+.resource-slot.oro.active {
+    background-color: #ffd54f; /* oro brillante */
+    box-shadow: 0 0 6px rgba(255, 213, 79, 0.6), inset 0 1px 2px rgba(255,255,255,0.4);
+}
+
 /* Gastados (Negros) */
 .resource-slot.spent {
     background-color: #2c2c2c;
@@ -354,4 +359,22 @@ body::before {
         width: 32px;
         height: 32px;
     }
+}
+
+/* Botones de Selección de Tierra */
+.land-btn {
+    transition: all 0.2s ease-in-out;
+}
+
+.land-btn:hover {
+    background-color: #e8c69f !important;
+    transform: scale(1.05);
+}
+
+.land-btn.active {
+    background-color: #8d5c46 !important;
+    color: #fbe9e7 !important;
+    font-weight: bold !important;
+    border-color: #4a2c20 !important;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
 }
