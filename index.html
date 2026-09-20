@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Hoja D&D</title>
+    <title>Hoja D&D - Labrob (Sanador)</title>
 
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="img/Fogata.png">
@@ -19,31 +19,38 @@
             <div>
                 <h2 id="nombre"></h2>
                 <div class="info-subtitle">
-                    🌿 <span id="info"></span> 🌿
+                    ✨ <span id="info"></span> ✨
                 </div>
 
                 <div class="subclass-passive" id="subclassPassive" style="flex-direction: column; align-items: stretch; gap: 10px;">
                     <div style="display: flex; align-items: center; gap: 15px;">
-                        <span class="passive-icon" id="subclass-icon">🏔️</span>
+                        <span class="passive-icon" id="subclass-icon">🌸🌙</span>
                         <div class="passive-text">
-                            <strong>Círculo de la Tierra</strong>
-                            <span id="subclass-desc">Sintonizado con un bioma natural para obtener conjuros y poderes específicos.</span>
+                            <strong>Círculo de los Sueños (Circle of Dreams) – Healer</strong>
+                            <span id="subclass-desc">Sintonizado con el Feywild y la Corte de Verano. Dispones de energía mágica feérica para sanar heridas con gran rapidez sin gastar espacios de conjuro.</span>
                         </div>
                     </div>
                     
                     <div style="display: flex; flex-direction: column; gap: 6px; border-top: 1px dashed #8d5c46; padding-top: 8px;">
-                        <span style="font-size: 0.95em; font-weight: bold; color: #4a2c20;">Sintonía de Bioma (Elige uno al terminar un Descanso Largo):</span>
-                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
-                            <button type="button" id="btn-land-arid" class="land-btn" style="padding: 4px; font-family: inherit; font-size: 1.1em; cursor: pointer; border: 1px solid #8d5c46; background: #f2d1a9; color: #4a2c20; border-radius: 4px; transition: 0.2s;">🏜️ Árida</button>
-                            <button type="button" id="btn-land-polar" class="land-btn" style="padding: 4px; font-family: inherit; font-size: 1.1em; cursor: pointer; border: 1px solid #8d5c46; background: #f2d1a9; color: #4a2c20; border-radius: 4px; transition: 0.2s;">❄️ Polar</button>
-                            <button type="button" id="btn-land-temperate" class="land-btn" style="padding: 4px; font-family: inherit; font-size: 1.1em; cursor: pointer; border: 1px solid #8d5c46; background: #f2d1a9; color: #4a2c20; border-radius: 4px; transition: 0.2s;">🍃 Templada</button>
-                            <button type="button" id="btn-land-tropical" class="land-btn" style="padding: 4px; font-family: inherit; font-size: 1.1em; cursor: pointer; border: 1px solid #8d5c46; background: #f2d1a9; color: #4a2c20; border-radius: 4px; transition: 0.2s;">🌴 Tropical</button>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 1em; font-weight: bold; color: #4a2c20;">🌸 Bálsamo de la Corte de Verano (Acción Adicional | 120 ft):</span>
+                            <span id="balsamo-pool-display" style="font-weight: bold; color: #8d2b24;">5 / 5 d6 disponibles</span>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <button type="button" id="btn-balsamo-1" class="rest-btn" style="background-color: #d88195; border-color: #8d2b24; padding: 6px; font-size: 1.05em; cursor: pointer;">
+                                🌸 Usar 1d6 (+1 Temp HP)
+                            </button>
+                            <button type="button" id="btn-balsamo-2" class="rest-btn" style="background-color: #b05c75; border-color: #63192c; padding: 6px; font-size: 1.05em; cursor: pointer;">
+                                ✨ Usar 2d6 (+2 Temp HP)
+                            </button>
+                        </div>
+                        <div style="font-size: 0.9em; color: #5d4037; font-style: italic;">
+                            * No cuenta como conjuro: ¡puedes lanzar un conjuro con tu acción principal en el mismo turno! Gasta máx 2 dados por uso.
                         </div>
                     </div>
                     
-                    <div style="border-top: 1px dashed #8d5c46; padding-top: 8px; display: flex; flex-direction: column; gap: 4px;">
-                        <span style="font-size: 0.95em; font-weight: bold; color: #4a2c20;">Ayuda de la Tierra (Rasgo de Nivel 3):</span>
-                        <button type="button" id="btn-lands-aid" class="rest-btn short-rest" style="font-size: 1.1em; padding: 6px; cursor: pointer; border: 2px solid #4a2c20; background: #8d6e63; color: white; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px;">💥 Usar Ayuda de la Tierra (1 Forma Salvaje)</button>
+                    <div style="border-top: 1px dashed #8d5c46; padding-top: 6px; font-size: 0.9em; color: #4a2c20;">
+                        🔮 <strong>Nivel 6 (Próximo):</strong> <em>Hogar de luz de luna y sombra</em> (esfera de 30 ft, +5 a Sigilo y Percepción durante descansos).
                     </div>
                 </div>
 
@@ -64,29 +71,43 @@
 
                 <div class="divider"><span class="divider-icon">💡</span></div>
 
-                <h2>Consejos de Soporte</h2>
+                <h2>Estrategia y Curación Clave</h2>
                 <div class="reminders-box">
                     <ul class="reminders-list">
-                        <li>💚 <strong>Curaciones Base</strong>: Suma siempre tu Sabiduría (<strong>+4</strong>) al lanzar <em>Curar heridas</em> (2d8+4) y <em>Palabra de curación</em> (2d4+4).</li>
-                        <li>💥 <strong>Ayuda de la Tierra</strong>: Puedes dañar enemigos (2d6 necrótico, salv. Con CD 14) y curar a un aliado (<strong>2d6 HP</strong>) al mismo tiempo usando 1 Forma Salvaje.</li>
-                        <li>✨ <strong>Linaje Élfico</strong>: Recuerda que puedes lanzar <em>Detectar magia</em> 1 vez gratis al día usando tu espacio dorado de recurso.</li>
-                        <li>🌿 <strong>Espíritu Sanador</strong>: El espíritu sanador puede curar a tus aliados hasta <strong>5 veces</strong> antes de desvanecerse (1 + mod. Sabiduría).</li>
-                        <li>⚡ <strong>Acción Adicional</strong>: Si usas <em>Palabra de curación</em> como Acción Adicional, aún puedes usar tu Acción principal para lanzar un truco de daño o interactuar.</li>
-                        <li>🧠 <strong>Concentración</strong>: Spells como <em>Espíritu sanador</em>, <em>Pasar sin rastro</em>, <em>Enredar</em> y <em>Fuego faérico</em> requieren concentración. ¡No los lances a la vez!</li>
+                        <li>🌸 <strong>Bálsamo de la Corte de Verano</strong>: Acción adicional a 120 ft (1 o 2d6 + 1 o 2 PV temporales). Úsalo sobre el aliado más herido en el Turno 1 o ante emergencias graves. ¡No es un conjuro, así que tu Acción principal queda libre para conjurar!</li>
+                        <li>🌿 <strong>Espíritu Sanador (Healing Spirit)</strong>: 1 min concentración a 60 ft. Invócalo en una zona segura antes o al inicio del combate; cura 1d6+4 cada turno a los aliados que pasen por él (hasta 5 curaciones).</li>
+                        <li>⚡ <strong>Palabra de Curación (Healing Word)</strong>: Acción adicional a 60 ft (1d4 + 4 PV). Tu salvavidas prioritario para levantar a distancia a un aliado que caiga a 0 PV.</li>
+                        <li>💚 <strong>Curar Heridas (Cure Wounds)</strong>: Acción en contacto cuerpo a cuerpo (1d8 + 4 PV). Sanación potente directa.</li>
+                        <li>🍒 <strong>Buenas Bayas (Goodberry)</strong>: 10 bayas = 10 PV garantizados. Gasta tus espacios de conjuro sobrantes al final del día antes de un descanso largo para acumular reservas de bayas curativas (duran 24h).</li>
+                        <li>🛡️ <strong>Posicionamiento Táctico</strong>: Mantén posición trasera (30–60 ft) detrás de tu escudo (+1 CA). Usa <em>Látigo de espinas</em> o <em>Enredar</em> (CD 15) para controlar enemigos a distancia.</li>
+                        <li>🏹 <strong>Antes del Encuentro</strong>: Lanza <em>Pasar sin rastro</em> (+10 a Sigilo grupal) para facilitar emboscadas o evitar ser emboscados.</li>
                     </ul>
                 </div>
             </div>
 
             <div>
+                <h2>Tiradas de Salvación</h2>
+                <div id="saves" class="saves-grid"></div>
+
+                <div class="divider"><span class="divider-icon">🎯</span></div>
+
                 <h2>Habilidades</h2>
                 <div id="skills" class="skills-grid"></div>
+
+                <div class="divider"><span class="divider-icon">📜</span></div>
+
+                <h2>Competencias e Idiomas</h2>
+                <div id="competencias" class="competencias-box"></div>
             </div>
 
         </div>
 
         <div class="divider"><span class="divider-icon">📜</span></div>
 
-        <h2>Conjuros</h2>
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <h2>Conjuros Preparados (9)</h2>
+            <span style="font-size: 1.15em; font-weight: bold; color: #8d2b24;" id="spell-stats-header">CD 15 | Ataque +7</span>
+        </div>
         <div id="Conjuros"></div>
 
         <div class="divider"><span class="divider-icon">✨</span></div>
@@ -96,15 +117,15 @@
 
         <div class="divider"><span class="divider-icon">🎒</span></div>
 
-        <h2>Equipo</h2>
+        <h2>Equipo e Inventario</h2>
         <div id="equipo"></div>
 
         <div class="divider"><span class="divider-icon">✍️</span></div>
 
-        <h2>Notas</h2>
+        <h2>Notas y Rasgos</h2>
         <div id="notas"></div>
 
-        <img src="img/Rosa.png" class="rosa-footer">
+        <img src="img/Rosa.png" class="rosa-footer" alt="Decoración Rosa">
 
     </div>
 

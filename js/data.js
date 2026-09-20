@@ -1,36 +1,52 @@
 const personaje = {
     nombre: "Labrob",
     clase: "Druida",
-    subclase: "Círculo de la Tierra",
-    nivel: 4,
+    subclase: "Círculo de los Sueños (Circle of Dreams)",
+    rol: "Healer / Soporte",
+    nivel: 5,
     Raza: "Alto Elfo",
-    alineamiento: "Neutral",
-    xp: 0,
+    trasfondo: "Sabio",
+    alineamiento: "Neutral Bueno",
+    xp: 6500,
 
-    proficiency: 2,
+    proficiency: 3,
 
     stats: {
-        str: 12,
-        dex: 12,
-        con: 14,
-        int: 11,
-        wis: 18, // Subido +2 por incremento de característica de Nivel 4 (Modificador +4)
-        cha: 9
+        str: 8,   // -1
+        dex: 12,  // +1 
+        con: 16,  // +3 
+        int: 10,  // +0 
+        wis: 18,  // +4 
+        cha: 10   // +0
+    },
+
+    salvaciones: {
+        str: { nombre: "Fuerza", stat: "str", prof: false, total: -1 },
+        dex: { nombre: "Destreza", stat: "dex", prof: false, total: 1 },
+        con: { nombre: "Constitución", stat: "con", prof: true, total: 6 },
+        int: { nombre: "Inteligencia", stat: "int", prof: false, total: 0 },
+        wis: { nombre: "Sabiduría", stat: "wis", prof: true, total: 7 },
+        cha: { nombre: "Carisma", stat: "cha", prof: false, total: 0 }
     },
 
     combate: {
         ca: 14,
-        velocidad: "30pies",
-        hp_max: 32, // Subido +7 por Nivel 4
-        hp_actual: 32,
-        hp_temp: 0
+        iniciativa: "+1",
+        velocidad: "30 ft",
+        hp_max: 48,
+        hp_actual: 48,
+        hp_temp: 0,
+        cd_conjuros: 15,
+        ataque_conjuros: "+7"
     },
 
     recursos: {
-        forma_salvaje: { actual: 2, max: 2 },
-        conjuros_l1: { actual: 4, max: 4 },
-        conjuros_l2: { actual: 3, max: 3 }, // Subido a 3 espacios en Nivel 4
-        detectar_magia: { actual: 1, max: 1 } // Recurso gratuito de Linaje Élfico (1 por descanso largo)
+        forma_salvaje: { actual: 2, max: 2, desc: "Recupera 1 en Descanso Corto, todos en Descanso Largo" },
+        balsamo_fey: { actual: 5, max: 5, desc: "5d6 dados de energía fey. Gasta hasta 2 dados/uso (Acción Adicional, 120 ft). Recarga en Descanso Largo." },
+        conjuros_l1: { actual: 4, max: 4, desc: "Espacios de Nivel 1" },
+        conjuros_l2: { actual: 3, max: 3, desc: "Espacios de Nivel 2" },
+        conjuros_l3: { actual: 2, max: 2, desc: "Espacios de Nivel 3" },
+        detectar_magia: { actual: 1, max: 1, desc: "1 lanzamiento gratuito por día (Linaje Alto Elfo)" }
     },
 
     skills: {
@@ -43,54 +59,123 @@ const personaje = {
         intimidacion: { stat: "cha", prof: false },
         investigacion: { stat: "int", prof: false },
         juego_manos: { stat: "dex", prof: false },
-        medicina: { stat: "wis", prof: false },
+        medicina: { stat: "wis", prof: true },
         naturaleza: { stat: "int", prof: true },
         percepcion: { stat: "wis", prof: true },
         perspicacia: { stat: "wis", prof: true },
         persuasion: { stat: "cha", prof: false },
         religion: { stat: "int", prof: false },
-        sigilo: { stat: "dex", prof: true },
+        sigilo: { stat: "dex", prof: false },
         supervivencia: { stat: "wis", prof: true },
-        trato_animales: { stat: "wis", prof: true }
+        trato_animales: { stat: "wis", prof: false }
     },
 
     Conjuros: [
-        { nombre: "Curar heridas (Lvl 1)", bono: "+6", daño: "2d8 + 4 HP (Curación al tocar - Reglas 2024)" },
-        { nombre: "Palabra de curación (Lvl 1)", bono: "+6", daño: "2d4 + 4 HP (Acción Adicional, 60 pies - Reglas 2024)" },
-        { nombre: "Fuego faérico (Lvl 1)", bono: "CD 14", daño: "Esfera 20 pies, ventaja en ataques contra enemigos en área (Salv. Des)" },
-        { nombre: "Enredar (Lvl 1)", bono: "CD 14", daño: "Área 20 pies, enreda a enemigos y crea terreno difícil (Salv. Fue)" },
-        { nombre: "Espíritu sanador (Lvl 2)", bono: "+6", daño: "Espíritu móvil. Cura 1d6 a quien entre a su espacio (hasta 5 veces, Acción Bonus)" },
-        { nombre: "Restablecimiento menor (Lvl 2)", bono: "+6", daño: "Cura ceguera, sordera, parálisis o envenenamiento a un objetivo" },
-        { nombre: "Pasar sin rastro (Lvl 2)", bono: "+0", daño: "+10 a Sigilo para aliados cercanos (Concentración, 1 hora)" }
+        // Nivel 1 (4 preparados)
+        { 
+            nivel: 1,
+            nombre: "Palabra de curación (Healing Word)", 
+            bono: "Acción Adicional | 60 ft", 
+            daño: "1d4 + 4 HP a distancia. Ideal para reanimar aliados a 0 PV" 
+        },
+        { 
+            nivel: 1,
+            nombre: "Curar heridas (Cure Wounds)", 
+            bono: "Acción | Al tocar", 
+            daño: "1d8 + 4 HP en contacto" 
+        },
+        { 
+            nivel: 1,
+            nombre: "Buenas bayas (Goodberry)", 
+            bono: "Acción | Al tocar", 
+            daño: "Crea 10 bayas mágicas. Cada una cura 1 HP y nutre por 1 día (duran 24h)" 
+        },
+        { 
+            nivel: 1,
+            nombre: "Enredar (Entangle)", 
+            bono: "CD 15 (Salv. Fue) | 90 ft", 
+            daño: "Área de 20 ft: terreno difícil y restringe a enemigos (Concentración, 1 min)" 
+        },
+        
+        // Nivel 2 (3 preparados)
+        { 
+            nivel: 2,
+            nombre: "Espíritu sanador (Healing Spirit)", 
+            bono: "Acción Adicional | 60 ft", 
+            daño: "Espíritu móvil. Cura 1d6 (+4) por turno a quien entre (hasta 5 curaciones, Conc. 1 min)" 
+        },
+        { 
+            nivel: 2,
+            nombre: "Restablecimiento menor (Lesser Restoration)", 
+            bono: "Acción | Al tocar", 
+            daño: "Cura ceguera, sordera, parálisis o envenenamiento de un objetivo" 
+        },
+        { 
+            nivel: 2,
+            nombre: "Pasar sin rastro (Pass without Trace)", 
+            bono: "+10 Sigilo | Radio 30 ft", 
+            daño: "+10 a pruebas de Sigilo para aliados cercanos y no pueden ser rastreados (Conc. 1 hora)" 
+        },
+
+        // Nivel 3 (2 preparados)
+        { 
+            nivel: 3,
+            nombre: "Disipar magia (Dispel Magic)", 
+            bono: "Acción | 120 ft", 
+            daño: "Disipa conjuros de Nivel 3 o menor automáticamente; o tirada de Sabiduría (+7) vs CD 10 + nivel" 
+        },
+        { 
+            nivel: 3,
+            nombre: "Revivir (Revivify)", 
+            bono: "Acción | Al tocar", 
+            daño: "Devuelve a la vida con 1 HP a una criatura muerta en el último minuto (consume diamantes por 300 po)" 
+        }
     ],
 
     Trucos: [
-        "Guía (1d4 como Reacción a 30 pies - Reglas 2024)",
-        "Resistencia (1d4 como Reacción a 30 pies ante salvación fallida - Reglas 2024)",
-        "Látigo de espinas (+6 para golpear, 1d6 perforante y atrae 10 pies a 30 pies)",
-        "Prestidigitación (Linaje Alto Elfo - Utilitario, se puede cambiar tras descanso largo)"
+        "Guía (Guidance) [Acción - Suma +1d4 a prueba de habilidad de un aliado a 30 ft]",
+        "Producir llama (Produce Flame) [+7 al ataque, 1d8 fuego a 30 ft, ilumina 20/20 ft]",
+        "Látigo de espinas (Thorn Whip) [+7 al ataque, 1d6 perforante a 30 ft y atrae 10 ft]",
+        "Reparar / Remendar (Mending) [Repara un objeto roto o desgarro ≤ 1 ft]"
     ],
 
     equipo: [
-        "Útiles de cartógrafo",
+        "219 monedas de oro",
+        "Armadura de cuero tachonado",
         "Escudo",
-        "Maza",
+        "Bastón (foco druídico)",
+        "Collar mágico",
         "Kit de hierbas",
+        "Kit de curandero",
+        "Útiles de cartógrafo",
+        "Maza",
+        "Mayal triple",
+        "Caña májika",
+        "Poción de invisibilidad",
+        "Pergamino de hablar con animales",
+        "Libro de mago",
+        "Brazalete",
+        "Jabón, linterna de gas, sombrero mihawk, aceite y 3 esposas",
         "Carpa",
         "Bolsa de dormir",
-        "Pergamino de hablar con animales",
-        "129 oro",
-        "Equipo de supervivencia (cuerda, agua, etc.)",
-        "Poción de invisibilidad",
-        "Libro de mago"
+        "Equipo de supervivencia (cuerda, agua, etc.)"
     ],
 
+    competencias: {
+        armaduras: "Armaduras ligeras, medias y escudos",
+        armas: "Armas simples, bastón, maza, mayal",
+        herramientas: "Kit de herboristería, kit de curandero, útiles de cartógrafo",
+        idiomas: "Común, Élfico, Druídico, Silvano"
+    },
+
     notas: [
-        "Visión en la oscuridad (60 pies)",
-        "Ascendencia feérica: Ventaja contra ser encantado y no puedes ser dormido mágicamente.",
-        "Linaje Alto Elfo: Conoces el truco Prestidigitación y tienes siempre preparado Detectar Magia (puedes lanzarlo 1 vez al día gratis).",
-        "Lenguaje druídico: Conoces el idioma secreto de los druidas.",
-        "Círculo de la Tierra (Nivel 3): Al terminar un descanso largo eliges un bioma (Árido, Polar, Templado, Tropical) para obtener conjuros/trucos adicionales preparados.",
-        "Ayuda de la Tierra (Nivel 3): Gasta 1 Forma Salvaje, esfera de 10 pies a 60 pies. Enemigos hacen salvación Con CD 14 o sufren 2d6 daño necrótico (mitad con éxito). Un aliado recupera 2d6 HP."
+        "Raza - Alto Elfo: Destreza +2, Inteligencia +1. Visión en la oscuridad 60 ft. Truco Reparar (Mending). Detectar Magia preparado (1 gratis/día).",
+        "Ascendencia feérica: Ventaja en salvaciones contra ser encantado y la magia no puede ponerte a dormir.",
+        "Trasfondo - Sabio: Especialista en investigación y secretos arcanos/naturales.",
+        "Círculo de los Sueños (Nivel 2) - Bálsamo de la Corte de Verano: Reserva de 5d6 dados de energía fey. Como Acción Adicional puedes gastar hasta 2 dados a la vez (alcance 120 ft) para curar 1d6 por dado gastado y otorgar 1 PV temporal por dado. Se recuperan en Descanso Largo.",
+        "Próximo rasgo (Nivel 6) - Hogar de luz de luna y sombra: En descansos creas esfera mágica de 30 ft (+5 a Sigilo y Percepción del grupo, oculta el humo y luz de fogatas).",
+        "Collar de Vitalidad: Otorga +2 a Constitución y +1 Punto de Golpe adicional por nivel."
     ]
 };
+
+

@@ -6,15 +6,17 @@ function init() {
     verificarNivelYResetearHP();
     renderInfo();
     renderStats();
+    renderSaves();
     renderCombat();
     renderRecursos();
     renderSkills();
-    initLandSelector(); // Inicializa el Círculo de la Tierra y sus botones
+    renderCompetencias();
+    initDreamsSubclass();
     renderConjuros();
     renderExtras();
 }
 
-/* DETECTAR CAMBIO DE NIVEL Y LIMPIAR CACHÉ DE HP */
+/* DETECTAR CAMBIO DE NIVEL Y LIMPIAR CACHÉ DE HP/RECURSOS */
 function verificarNivelYResetearHP() {
     let storedLvl = localStorage.getItem("personaje_nivel");
     if (storedLvl !== String(personaje.nivel)) {
@@ -29,13 +31,13 @@ function verificarNivelYResetearHP() {
 function renderInfo() {
     document.getElementById("nombre").innerText = personaje.nombre;
     document.getElementById("info").innerText =
-        `${personaje.clase} (${personaje.subclase}) lvl ${personaje.nivel} - ${personaje.Raza}`;
+        `${personaje.clase} (${personaje.subclase}) Nvl ${personaje.nivel} - ${personaje.Raza} | ${personaje.trasfondo} | ${personaje.alineamiento}`;
 }
 
 /* STATS */
 function renderStats() {
     let container = document.getElementById("stats");
-    container.innerHTML = ""; // Limpiar antes de renderizar
+    container.innerHTML = "";
 
     Object.entries(personaje.stats).forEach(([key, val]) => {
         let m = mod(val);
@@ -44,21 +46,48 @@ function renderStats() {
             <div class="box">
                 <b>${key.toUpperCase()}</b>
                 <div>${val}</div>
-                <div>${m >= 0 ? "+" : ""}${m}</div>
+                <div style="font-weight: bold; color: #8d2b24;">${m >= 0 ? "+" : ""}${m}</div>
             </div>
         `;
     });
 }
 
-/* COMBAT */
+/* SALVACIONES */
+function renderSaves() {
+    let container = document.getElementById("saves");
+    if (!container) return;
+    container.innerHTML = "";
+
+    Object.entries(personaje.salvaciones).forEach(([key, s]) => {
+        let isProf = s.prof;
+        let sign = s.total >= 0 ? "+" : "";
+
+        container.innerHTML += `
+            <div class="save-box ${isProf ? "prof" : ""}">
+                <b>${isProf ? "● " : "○ "}${key.toUpperCase()}</b>
+                <div class="save-bonus">${sign}${s.total}</div>
+            </div>
+        `;
+    });
+}
+
+/* COMBATE */
 function renderCombat() {
     const c = personaje.combate;
 
     document.getElementById("combate").innerHTML = `
         <div class="hp-box">
-            <span>🛡️ CA: ${c.ca} &nbsp;&nbsp;&nbsp;&nbsp; 🏃 Velocidad: ${c.velocidad}</span>
+            <div style="display: flex; justify-content: space-around; width: 100%; font-size: 1.15em; font-weight: bold; color: #3e2723; flex-wrap: wrap; gap: 8px;">
+                <span>🛡️ CA: ${c.ca}</span>
+                <span>⚡ Iniciativa: ${c.iniciativa}</span>
+                <span>🏃 Velocidad: ${c.velocidad}</span>
+            </div>
+            <div style="display: flex; justify-content: space-around; width: 100%; font-size: 1.05em; color: #8d2b24; font-weight: bold; border-top: 1px dashed #8d5c46; padding-top: 5px;">
+                <span>🔮 CD Conjuros: ${c.cd_conjuros}</span>
+                <span>🎯 Ataque Conjuros: ${c.ataque_conjuros}</span>
+            </div>
 
-            <div class="hp-inputs">
+            <div class="hp-inputs" style="margin-top: 4px;">
                 ❤️ 
                 <input type="number" id="hpActual" value="${localStorage.getItem("hp_actual") || c.hp_actual}">
                 /
@@ -115,7 +144,7 @@ function bindHPEvents() {
     document.getElementById("hpMax").addEventListener("input", actualizarHP);
 }
 
-/* RECURSOS INTERACTIVOS (FORMA SALVAJE Y ESPACIOS) */
+/* RECURSOS INTERACTIVOS */
 function renderRecursos() {
     let container = document.getElementById("recursos");
     if (!container) return;
@@ -130,6 +159,14 @@ function renderRecursos() {
                 <div class="slots-container" id="slots-forma_salvaje"></div>
             </div>
             
+            <div class="recurso-group">
+                <div class="recurso-header">
+                    <span>🌸 Bálsamo de la Corte de Verano (5d6 Fey)</span>
+                    <span class="recurso-count" id="count-balsamo_fey"></span>
+                </div>
+                <div class="slots-container" id="slots-balsamo_fey"></div>
+            </div>
+
             <div class="recurso-group">
                 <div class="recurso-header">
                     <span>🔮 Espacios Hechizo Nivel 1</span>
@@ -148,7 +185,15 @@ function renderRecursos() {
 
             <div class="recurso-group">
                 <div class="recurso-header">
-                    <span>✨ Detectar Magia (Linaje Élfico)</span>
+                    <span>✨ Espacios Hechizo Nivel 3</span>
+                    <span class="recurso-count" id="count-conjuros_l3"></span>
+                </div>
+                <div class="slots-container" id="slots-conjuros_l3"></div>
+            </div>
+
+            <div class="recurso-group">
+                <div class="recurso-header">
+                    <span>🌟 Detectar Magia (Linaje Alto Elfo)</span>
                     <span class="recurso-count" id="count-detectar_magia"></span>
                 </div>
                 <div class="slots-container" id="slots-detectar_magia"></div>
@@ -162,8 +207,10 @@ function renderRecursos() {
     `;
 
     renderSlotsGroup("forma_salvaje", personaje.recursos.forma_salvaje.max, "celeste");
+    renderSlotsGroup("balsamo_fey", personaje.recursos.balsamo_fey.max, "rosa");
     renderSlotsGroup("conjuros_l1", personaje.recursos.conjuros_l1.max, "azul");
     renderSlotsGroup("conjuros_l2", personaje.recursos.conjuros_l2.max, "azul");
+    renderSlotsGroup("conjuros_l3", personaje.recursos.conjuros_l3.max, "violeta");
     renderSlotsGroup("detectar_magia", personaje.recursos.detectar_magia.max, "oro");
 
     document.getElementById("btnShortRest").addEventListener("click", realizarDescansoCorto);
@@ -186,11 +233,15 @@ function renderSlotsGroup(key, max, colorClass) {
         slot.className = `resource-slot ${colorClass} ${isActive ? "active" : "spent"}`;
         slot.setAttribute("role", "checkbox");
         slot.setAttribute("aria-checked", isActive);
+        slot.title = `Slot ${idx + 1} de ${max} (${isActive ? "Disponible" : "Gastado"})`;
         
         slot.addEventListener("click", () => {
             states[idx] = !states[idx];
             setRecursoEstado(key, states);
             renderSlotsGroup(key, max, colorClass);
+            if (key === "balsamo_fey") {
+                actualizarDisplayBalsamo();
+            }
         });
 
         slotsContainer.appendChild(slot);
@@ -218,12 +269,11 @@ function resetRecurso(key, max) {
 }
 
 function realizarDescansoCorto() {
-    // Recupera 1 uso de Forma Salvaje en Descanso Corto (Reglas D&D 2024)
     let key = "forma_salvaje";
     let max = personaje.recursos.forma_salvaje.max;
     let states = getRecursoEstado(key, max);
     
-    let spentIndex = states.indexOf(false); // Primer slot vacío
+    let spentIndex = states.indexOf(false);
     if (spentIndex !== -1) {
         states[spentIndex] = true;
         setRecursoEstado(key, states);
@@ -235,36 +285,41 @@ function realizarDescansoCorto() {
 }
 
 function realizarDescansoLargo() {
-    // Restaura Forma Salvaje, todos los Conjuros y el conjuro de Linaje
     resetRecurso("forma_salvaje", personaje.recursos.forma_salvaje.max);
+    resetRecurso("balsamo_fey", personaje.recursos.balsamo_fey.max);
     resetRecurso("conjuros_l1", personaje.recursos.conjuros_l1.max);
     resetRecurso("conjuros_l2", personaje.recursos.conjuros_l2.max);
+    resetRecurso("conjuros_l3", personaje.recursos.conjuros_l3.max);
     resetRecurso("detectar_magia", personaje.recursos.detectar_magia.max);
 
-    // Restaura vida máxima
     let maxHP = parseInt(document.getElementById("hpMax").value) || personaje.combate.hp_max;
     document.getElementById("hpActual").value = maxHP;
     actualizarHP();
 
     renderSlotsGroup("forma_salvaje", personaje.recursos.forma_salvaje.max, "celeste");
+    renderSlotsGroup("balsamo_fey", personaje.recursos.balsamo_fey.max, "rosa");
     renderSlotsGroup("conjuros_l1", personaje.recursos.conjuros_l1.max, "azul");
     renderSlotsGroup("conjuros_l2", personaje.recursos.conjuros_l2.max, "azul");
+    renderSlotsGroup("conjuros_l3", personaje.recursos.conjuros_l3.max, "violeta");
     renderSlotsGroup("detectar_magia", personaje.recursos.detectar_magia.max, "oro");
     
-    alert("🏕️ ¡Descanso largo realizado! Se restauró tu salud y todos tus recursos.");
+    actualizarDisplayBalsamo();
+    alert("🏕️ ¡Descanso largo realizado! Se restauró tu salud (48 PV), todos tus espacios de conjuro y tus 5d6 de Bálsamo Fey.");
 }
 
 function resetRecursos() {
     resetRecurso("forma_salvaje", personaje.recursos.forma_salvaje.max);
+    resetRecurso("balsamo_fey", personaje.recursos.balsamo_fey.max);
     resetRecurso("conjuros_l1", personaje.recursos.conjuros_l1.max);
     resetRecurso("conjuros_l2", personaje.recursos.conjuros_l2.max);
+    resetRecurso("conjuros_l3", personaje.recursos.conjuros_l3.max);
     resetRecurso("detectar_magia", personaje.recursos.detectar_magia.max);
 }
 
 /* SKILLS */
 function renderSkills() {
     let container = document.getElementById("skills");
-    container.innerHTML = ""; // Limpiar antes de renderizar
+    container.innerHTML = "";
 
     Object.entries(personaje.skills).forEach(([name, data]) => {
         let baseMod = mod(personaje.stats[data.stat]);
@@ -274,7 +329,7 @@ function renderSkills() {
         container.innerHTML += `
             <div class="skill">
                 <span>${data.prof ? "●" : "○"} ${displayName}</span>
-                <span>${total >= 0 ? "+" : ""}${total}</span>
+                <span style="font-weight: ${data.prof ? "bold" : "normal"}; color: ${data.prof ? "#8d2b24" : "inherit"}">${total >= 0 ? "+" : ""}${total}</span>
             </div>
         `;
     });
@@ -283,17 +338,25 @@ function renderSkills() {
 function formatSkillName(name) {
     let formatted = name.replace(/_/g, " ");
     
-    // Correcciones ortográficas y de formato específicas
     const traducciones = {
-        "juego manos": "Juego de manos",
-        "trato animales": "Trato con animales",
+        "acrobacias": "Acrobacias",
+        "atletismo": "Atletismo",
+        "arcano": "Arcano",
         "engaño": "Engaño",
+        "historia": "Historia",
         "interpretacion": "Interpretación",
         "intimidacion": "Intimidación",
         "investigacion": "Investigación",
+        "juego manos": "Juego de manos",
+        "medicina": "Medicina",
+        "naturaleza": "Naturaleza",
         "percepcion": "Percepción",
+        "perspicacia": "Perspicacia",
         "persuasion": "Persuasión",
-        "religion": "Religión"
+        "religion": "Religión",
+        "sigilo": "Sigilo",
+        "supervivencia": "Supervivencia",
+        "trato animales": "Trato con animales"
     };
 
     if (traducciones[name]) return traducciones[name];
@@ -302,143 +365,144 @@ function formatSkillName(name) {
     return formatted.charAt(0).toUpperCase() + formatted.slice(1);
 }
 
-/* CONJUROS + EXTRAS */
-function renderConjuros() {
-    let html = "";
-
-    // 1. Renderizar conjuros base preparados
-    personaje.Conjuros.forEach(c => {
-        html += `<div class="spell-item"><b>${c.nombre}</b> <span class="spell-bono">(${c.bono})</span>: <span class="spell-dmg">${c.daño}</span></div>`;
-    });
-
-    // 2. Renderizar conjuros adicionales de la sintonía de la Tierra
-    let activeLand = localStorage.getItem("land_type") || "polar";
-    let landSpells = CONJUROS_TIERRA[activeLand].conjuros;
-    
-    html += `<div style="margin-top: 15px; margin-bottom: 8px; font-weight: bold; font-size: 1.15em; color: #8d5c46; border-bottom: 1px dashed #8d5c46; padding-bottom: 3px;">📖 Conjuros del Círculo (Tierra: ${CONJUROS_TIERRA[activeLand].nombre})</div>`;
-    
-    landSpells.forEach(c => {
-        html += `<div class="spell-item" style="border-left: 3px solid #8d5c46; background: rgba(141, 92, 70, 0.08);"><b>${c.nombre}</b> <span class="spell-bono">(${c.bono})</span>: <span class="spell-dmg">${c.daño}</span></div>`;
-    });
-
-    document.getElementById("Conjuros").innerHTML = html;
+/* COMPETENCIAS E IDIOMAS */
+function renderCompetencias() {
+    let container = document.getElementById("competencias");
+    if (!container) return;
+    const comp = personaje.competencias;
+    container.innerHTML = `
+        <div>🛡️ <strong>Armaduras:</strong> ${comp.armaduras}</div>
+        <div>⚔️ <strong>Armas:</strong> ${comp.armas}</div>
+        <div>🌿 <strong>Herramientas:</strong> ${comp.herramientas}</div>
+        <div>🗣️ <strong>Idiomas:</strong> ${comp.idiomas}</div>
+    `;
 }
 
-function renderExtras() {
-    let activeLand = localStorage.getItem("land_type") || "polar";
-    let landCantrip = CONJUROS_TIERRA[activeLand].trucos[0];
-    
-    let trucosConCirculo = [...personaje.Trucos, landCantrip];
-    document.getElementById("Trucos").innerHTML = trucosConCirculo.join(" • ");
+/* SUBCLASE: CÍRCULO DE LOS SUEÑOS */
+function initDreamsSubclass() {
+    actualizarDisplayBalsamo();
 
+    const btn1 = document.getElementById("btn-balsamo-1");
+    const btn2 = document.getElementById("btn-balsamo-2");
+
+    if (btn1) {
+        btn1.onclick = () => usarBalsamoDeVerano(1);
+    }
+    if (btn2) {
+        btn2.onclick = () => usarBalsamoDeVerano(2);
+    }
+}
+
+function actualizarDisplayBalsamo() {
+    let key = "balsamo_fey";
+    let max = personaje.recursos.balsamo_fey.max;
+    let states = getRecursoEstado(key, max);
+    let disponibles = states.filter(Boolean).length;
+
+    let display = document.getElementById("balsamo-pool-display");
+    if (display) {
+        display.innerText = `${disponibles} / ${max} d6 disponibles`;
+    }
+}
+
+function usarBalsamoDeVerano(cantidadDados) {
+    let key = "balsamo_fey";
+    let max = personaje.recursos.balsamo_fey.max;
+    let states = getRecursoEstado(key, max);
+    let disponibles = states.filter(Boolean).length;
+
+    if (disponibles < cantidadDados) {
+        alert(`❌ No tienes suficientes dados feéricos disponibles (tienes ${disponibles}, necesitas ${cantidadDados}). ¡Realiza un descanso largo para recargarlos!`);
+        return;
+    }
+
+    let dadosGastados = 0;
+    let tiradas = [];
+    let sumaCuracion = 0;
+
+    for (let i = 0; i < states.length && dadosGastados < cantidadDados; i++) {
+        if (states[i]) {
+            states[i] = false;
+            dadosGastados++;
+            let roll = Math.floor(Math.random() * 6) + 1;
+            tiradas.push(roll);
+            sumaCuracion += roll;
+        }
+    }
+
+    setRecursoEstado(key, states);
+    renderSlotsGroup(key, max, "rosa");
+    actualizarDisplayBalsamo();
+
+    let tempHP = cantidadDados;
+    let detalleTirada = tiradas.length > 1 ? ` (${tiradas.join(" + ")})` : "";
+
+    alert(`🌸 ¡BÁLSAMO DE LA CORTE DE VERANO!
+Acción Adicional | Alcance: 120 pies
+
+Has canalizado ${cantidadDados} dado(s) d6 de energía fey:
+• 💖 Curación restaurada: ${sumaCuracion} HP${detalleTirada}
+• 🛡️ Puntos de Golpe Temporales: +${tempHP} PV temp
+• Reserva restante: ${disponibles - cantidadDados} / ${max} d6
+
+¡Recuerda: NO es un conjuro, tu Acción principal queda libre para atacar o conjurar!`);
+}
+
+/* CONJUROS */
+function renderConjuros() {
+    let container = document.getElementById("Conjuros");
+    if (!container) return;
+
+    let html = "";
+    const niveles = [
+        { lvl: 1, titulo: "Nivel 1 (4 Espacios de Conjuro)", badge: "4 preparados" },
+        { lvl: 2, titulo: "Nivel 2 (3 Espacios de Conjuro)", badge: "3 preparados" },
+        { lvl: 3, titulo: "Nivel 3 (2 Espacios de Conjuro)", badge: "2 preparados" }
+    ];
+
+    niveles.forEach(n => {
+        let spellsOfLevel = personaje.Conjuros.filter(c => c.nivel === n.lvl);
+        if (spellsOfLevel.length > 0) {
+            html += `
+                <div class="spell-category-header">
+                    <span>📖 ${n.titulo}</span>
+                    <span style="font-size: 0.9em; opacity: 0.85;">${n.badge}</span>
+                </div>
+            `;
+            spellsOfLevel.forEach(c => {
+                html += `
+                    <div class="spell-item">
+                        <b>${c.nombre}</b> <span class="spell-bono">(${c.bono})</span>: 
+                        <span class="spell-dmg">${c.daño}</span>
+                    </div>
+                `;
+            });
+        }
+    });
+
+    container.innerHTML = html;
+}
+
+/* EXTRAS */
+function renderExtras() {
+    // Trucos
+    document.getElementById("Trucos").innerHTML = personaje.Trucos.map(t => 
+        `<div class="spell-item" style="border-left-color: #5c6bc0; margin-bottom: 5px;">✨ <b>${t}</b></div>`
+    ).join("");
+
+    // Equipo
     document.getElementById("equipo").innerHTML =
-        "<ul>" + personaje.equipo.map(e => `<li>${e}</li>`).join("") + "</ul>";
+        "<ul>" + personaje.equipo.map(e => {
+            if (e.toLowerCase().includes("oro")) {
+                return `<li>💰 <strong>${e}</strong></li>`;
+            }
+            return `<li>${e}</li>`;
+        }).join("") + "</ul>";
     
+    // Notas y Rasgos
     let notasHtml = "<ul>" + personaje.notas.map(n => `<li>${n.trim()}</li>`).join("") + "</ul>";
     document.getElementById("notas").innerHTML = notasHtml;
 }
 
-/* INIT */
+/* INIT ON LOAD */
 document.addEventListener("DOMContentLoaded", init);
-
-/* LÓGICA DEL CÍRCULO DE LA TIERRA Y RASGOS DE CLASE (D&D 2024) */
-const CONJUROS_TIERRA = {
-    arid: {
-        nombre: "Árida 🏜️",
-        trucos: ["Descarga de fuego (Fire Bolt) [Círculo] (+6 para golpear, 1d10 fuego, 120 pies)"],
-        conjuros: [
-            { nombre: "Manos ardientes (Lvl 1) [Círculo]", bono: "CD 14", daño: "Cono de 15 pies, 3d6 fuego (Salv. Des mitad)" },
-            { nombre: "Desenfocar (Lvl 2) [Círculo]", bono: "+0", daño: "Los ataques contra ti tienen desventaja (Concentración, 1 minuto)" }
-        ]
-    },
-    polar: {
-        nombre: "Polar ❄️",
-        trucos: ["Rayo de escarcha (Ray of Frost) [Círculo] (+6 para golpear, 1d8 frío y reduce velocidad 10 pies, 60 pies)"],
-        conjuros: [
-            { nombre: "Nube de niebla (Lvl 1) [Círculo]", bono: "+0", daño: "Crea una esfera de niebla de 20 pies de radio (Concentración, 1 hora)" },
-            { nombre: "Retener persona (Lvl 2) [Círculo]", bono: "CD 14", daño: "Paraliza a un humanoide a 60 pies (Salv. Sab al final de su turno)" }
-        ]
-    },
-    temperate: {
-        nombre: "Templada 🍃",
-        trucos: ["Agarre de choque (Shocking Grasp) [Círculo] (+6 para golpear cuerpo a cuerpo, 1d8 eléc. y cancela Reacción del enemigo)"],
-        conjuros: [
-            { nombre: "Dormir (Lvl 1) [Círculo]", bono: "+0", daño: "Pone a dormir a criaturas en un área (5d8 HP totales)" },
-            { nombre: "Paso brumoso (Lvl 2) [Círculo]", bono: "+0", daño: "Te teletransportas hasta 30 pies a un lugar que veas (Acción Adicional)" }
-        ]
-    },
-    tropical: {
-        nombre: "Tropical 🌴",
-        trucos: ["Salpicadura de ácido (Acid Splash) [Círculo] (CD 14, 1d6 ácido a 1 o 2 objetivos a 5 pies, 60 pies)"],
-        conjuros: [
-            { nombre: "Rayo de enfermedad (Lvl 1) [Círculo]", bono: "+6", daño: "2d8 veneno y envenena si falla salv. Con (Alcance 60 pies)" },
-            { nombre: "Telaraña (Lvl 2) [Círculo]", bono: "CD 14", daño: "Llena área de 20 pies de telarañas que restringen (Salv. Des)" }
-        ]
-    }
-};
-
-function initLandSelector() {
-    let currentLand = localStorage.getItem("land_type") || "polar";
-    localStorage.setItem("land_type", currentLand);
-    actualizarBotonesSelector(currentLand);
-
-    // Enlazar eventos de botones de bioma
-    document.getElementById("btn-land-arid").addEventListener("click", () => setLand("arid"));
-    document.getElementById("btn-land-polar").addEventListener("click", () => setLand("polar"));
-    document.getElementById("btn-land-temperate").addEventListener("click", () => setLand("temperate"));
-    document.getElementById("btn-land-tropical").addEventListener("click", () => setLand("tropical"));
-    
-    // Enlazar evento de Ayuda de la Tierra
-    document.getElementById("btn-lands-aid").addEventListener("click", realizarAyudaDeLaTierra);
-}
-
-function setLand(landType) {
-    localStorage.setItem("land_type", landType);
-    actualizarBotonesSelector(landType);
-    renderConjuros();
-    renderExtras();
-}
-
-function actualizarBotonesSelector(activeLand) {
-    const lands = ["arid", "polar", "temperate", "tropical"];
-    lands.forEach(land => {
-        const btn = document.getElementById(`btn-land-${land}`);
-        if (btn) {
-            if (land === activeLand) {
-                btn.classList.add("active");
-            } else {
-                btn.classList.remove("active");
-            }
-        }
-    });
-
-    const descSpan = document.getElementById("subclass-desc");
-    if (descSpan) {
-        let biomaName = CONJUROS_TIERRA[activeLand].nombre;
-        descSpan.innerHTML = `Sintonizado con el bioma <strong>${biomaName}</strong>. Tienes preparados sus conjuros de círculo asociados de forma gratuita.`;
-    }
-}
-
-function realizarAyudaDeLaTierra() {
-    let key = "forma_salvaje";
-    let max = personaje.recursos.forma_salvaje.max;
-    let states = getRecursoEstado(key, max);
-    
-    let activeIndex = states.indexOf(true); // Encuentra la primera disponible
-    if (activeIndex === -1) {
-        alert("❌ No te quedan usos disponibles de Forma Salvaje para activar la Ayuda de la Tierra.");
-        return;
-    }
-
-    // Gasta 1 uso
-    states[activeIndex] = false;
-    setRecursoEstado(key, states);
-    renderSlotsGroup(key, max, "celeste");
-
-    alert(`💥 ¡ACTIVADO: Ayuda de la Tierra!
-Has gastado 1 uso de tu Forma Salvaje.
-
-Efecto en esfera de 10 pies de radio a 60 pies:
-• Cada criatura elegida debe hacer una salvación de Con CD 14 o sufrir 2d6 de daño Necrótico (mitad si tiene éxito).
-• Un aliado de tu elección dentro del área recupera 2d6 Puntos de Golpe.`);
-}
