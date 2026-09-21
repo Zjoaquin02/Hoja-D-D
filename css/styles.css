@@ -3,7 +3,7 @@
 }
 
 body {
-    background: linear-gradient(135deg, #2c1a10 0%, #170e0a 100%);
+    background: url('../img/ladrillos.png') center/cover fixed;
     font-family: 'VT323', monospace;
     display: flex;
     justify-content: center;
