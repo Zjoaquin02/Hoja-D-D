@@ -481,6 +481,21 @@ function renderConjuros() {
     });
 
     container.innerHTML = html;
+
+    // Renderizar conjuros alternativos
+    let altContainer = document.getElementById("conjuros-alternativos");
+    if (altContainer && personaje.conjurosAlternativos) {
+        let altHtml = "";
+        personaje.conjurosAlternativos.forEach(c => {
+            altHtml += `
+                <div class="spell-item" style="opacity: 0.85; border-left-color: #78909c;">
+                    <b>${c.nombre}</b> <span class="spell-bono">(Nivel ${c.nivel} | ${c.bono})</span>: 
+                    <span class="spell-dmg">${c.daño}</span>
+                </div>
+            `;
+        });
+        altContainer.innerHTML = altHtml;
+    }
 }
 
 /* EXTRAS */

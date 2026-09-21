@@ -86,9 +86,9 @@ const personaje = {
         },
         { 
             nivel: 1,
-            nombre: "Buenas bayas (Goodberry)", 
-            bono: "Acción | Al tocar", 
-            daño: "Crea 10 bayas mágicas. Cada una cura 1 HP y nutre por 1 día (duran 24h)" 
+            nombre: "Onda atronadora (Thunderwave)", 
+            bono: "Acción | Cubo 15 ft", 
+            daño: "Tirada CON o 2d8 trueno y empuje 10 ft (+1d8 por nivel alto). Éxito: Mitad daño" 
         },
         { 
             nivel: 1,
@@ -120,9 +120,9 @@ const personaje = {
         // Nivel 3 (2 preparados)
         { 
             nivel: 3,
-            nombre: "Disipar magia (Dispel Magic)", 
-            bono: "Acción | 120 ft", 
-            daño: "Disipa conjuros de Nivel 3 o menor automáticamente; o tirada de Sabiduría (+7) vs CD 10 + nivel" 
+            nombre: "Aura de vitalidad (Aura of Vitality)", 
+            bono: "Acción | Emanación 30 ft", 
+            daño: "Concentración (1 min). Al invocarla y al inicio de cada uno de tus turnos, curas 2d6 PV a una criatura en el aura." 
         },
         { 
             nivel: 3,
@@ -134,7 +134,7 @@ const personaje = {
 
     Trucos: [
         "Guía (Guidance) [Acción - Suma +1d4 a prueba de habilidad de un aliado a 30 ft]",
-        "Producir llama (Produce Flame) [+7 al ataque, 1d8 fuego a 30 ft, ilumina 20/20 ft]",
+        "Rocío venenoso (Poison Spray) [+7 al ataque, 1d12 veneno a 30 ft]",
         "Látigo de espinas (Thorn Whip) [+7 al ataque, 1d6 perforante a 30 ft y atrae 10 ft]",
         "Reparar / Remendar (Mending) [Repara un objeto roto o desgarro ≤ 1 ft]"
     ],
@@ -158,7 +158,8 @@ const personaje = {
         "Jabón, linterna de gas, sombrero mihawk, aceite y 3 esposas",
         "Carpa",
         "Bolsa de dormir",
-        "Equipo de supervivencia (cuerda, agua, etc.)"
+        "Equipo de supervivencia (cuerda, agua, etc.)",
+        "Pokeball (permite invocar una mascota 1 vez al día)"
     ],
 
     competencias: {
@@ -175,6 +176,27 @@ const personaje = {
         "Círculo de los Sueños (Nivel 2) - Bálsamo de la Corte de Verano: Reserva de 5d6 dados de energía fey. Como Acción Adicional puedes gastar hasta 2 dados a la vez (alcance 120 ft) para curar 1d6 por dado gastado y otorgar 1 PV temporal por dado. Se recuperan en Descanso Largo.",
         "Próximo rasgo (Nivel 6) - Hogar de luz de luna y sombra: En descansos creas esfera mágica de 30 ft (+5 a Sigilo y Percepción del grupo, oculta el humo y luz de fogatas).",
         "Collar de Vitalidad: Otorga +2 a Constitución y +1 Punto de Golpe adicional por nivel."
+    ],
+
+    conjurosAlternativos: [
+        {
+            nivel: 1,
+            nombre: "Buenas bayas (Goodberry)", 
+            bono: "Acción | Al tocar", 
+            daño: "Crea 10 bayas mágicas. Cada una cura 1 HP y nutre por 1 día (duran 24h)" 
+        },
+        {
+            nivel: 3,
+            nombre: "Disipar magia (Dispel Magic)", 
+            bono: "Acción | 120 ft", 
+            daño: "Disipa conjuros de Nivel 3 o menor automáticamente; o tirada de Sabiduría (+7) vs CD 10 + nivel" 
+        },
+        {
+            nivel: 3,
+            nombre: "Invocar a feérico (Summon Fey)", 
+            bono: "1 Acción | 90 ft", 
+            daño: "Concentración (1 hora). Invoca un espíritu feérico que lucha por ti." 
+        }
     ]
 };
 
